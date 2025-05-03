@@ -3,6 +3,7 @@ import { Poppins, Roboto, Inter, Lexend_Deca, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Footer from "@/components/Footer";
 
 
 const poppins = Poppins({
@@ -119,7 +120,10 @@ export default function RootLayout({
             disableTransitionOnChange
           >
         <Navbar />
+        <div className="min-h-screen">
         {children}
+        </div>
+        <Footer />
         </ThemeProvider>
       </body>
     </html>

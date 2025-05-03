@@ -9,6 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        primaryBtn: "group flex cursor-pointer flex-row justify-center items-center ease-in duration-300 b-[1px] font-medium lg:text-[13px] xl:text-[15px] 2xl:text-[18px] border rounded-md border-primary px-2 2xl:w-[210px] xl:h-[48px] h-[56px] 2xl:h-[56px] hover:bg-primary font-lexend",
         default:
           "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
         destructive:
