@@ -1,10 +1,17 @@
-import type { Metadata } from "next";
+'use client';
+
+// import type { Metadata } from "next";
 import { Poppins, Roboto, Inter, Lexend_Deca, DM_Sans } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Footer from "@/components/Footer";
-
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from '@/app/store';
+import DashboardLayout from "@/components/layouts/DashboardLayout";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -41,67 +48,37 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "codingwithsaleem",
-  icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
-  },
-  manifest: "/site.webmanifest",
-  keywords: [
-    "codingwithsaleem",
-    "coding with saleem",
-    "coding solutions",
-    "education",
-    "web development",
-    "programming",
-    "services",
-  ],
-  description:
-    "Coding with Saleem - A platform offering coding solutions, educational content, web development tutorials, programming guides, and various services.",
-  authors: [
-    {
-      name: "Saleem Raza",
-      url: "codingwithsaleem.com",
-    },
-  ],
-  creator: "Saleem Raza",
-  publisher: "Saleem Raza",
-  openGraph: {
-    title: "Codingwithsaleem",
-    description:
-      "Coding with Saleem - A platform offering coding solutions, educational content, web development tutorials, programming guides, and various services.",
-    url: "https://codingwithsaleem.com",
-    siteName: "Codingwithsaleem",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Coding with Saleem",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Codingwithsaleem",
-    description:
-      "Coding with Saleem - A platform offering coding solutions, educational content, web development tutorials, programming guides, and various services.",
-    images: ["/logo-01.png"],
-    creator: "@codingwithsaleem",
-    site: "@codingwithsaleem",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: true,
-  },
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-};
+// export const metadata: Metadata = {
+//   title: "codingwithsaleem",
+//   icons: {
+//     icon: "/icon.svg",
+//     shortcut: "/icon.svg",
+//     apple: "/icon.svg",
+//   },
+//   manifest: "/site.webmanifest",
+//   keywords: [
+//     "codingwithsaleem",
+//     "coding with saleem",
+//     "coding solutions",
+//     "education",
+//     "web development",
+//     "programming",
+//     "services",
+//   ],
+//   description:
+//     "Coding with Saleem - A platform offering coding solutions, educational content, web development tutorials, programming guides, and various services.",
+//   authors: [
+//     {
+//       name: "Saleem Raza",
+//       url: "codingwithsaleem.com",
+//     },
+//   ],
+//   creator: "Saleem Raza",
+//   publisher: "Saleem Raza",
+// };
+
+const queryClient = new QueryClient();
+
 
 export default function RootLayout({
   children,
@@ -114,16 +91,27 @@ export default function RootLayout({
         className={`${poppins.variable} ${lexend.variable} ${roboto.variable} ${inter.variable} ${dmSans.variable}`}
       >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-        <Navbar />
-        <div className="min-h-screen">
-        {children}
-        </div>
-        <Footer />
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider client={queryClient}>
+            <Provider store={store}>
+              <PersistGate
+                loading={<div>Loading...</div>}
+                persistor={persistor}
+              >
+                <TooltipProvider>
+                  <Toaster />
+                  <Sonner />
+                  <DashboardLayout>
+                    {children}
+                  </DashboardLayout>
+                </TooltipProvider>
+              </PersistGate>
+            </Provider>
+          </QueryClientProvider>
         </ThemeProvider>
       </body>
     </html>
